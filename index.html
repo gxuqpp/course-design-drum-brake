@@ -1321,10 +1321,10 @@ function calcBasic(){
   state.phi=getN('phi'); state.beta=getN('beta');
   state.f=getN('f'); state.delta=getN('delta');
 
-  state.L1_empty=state.L*state.front_empty;
-  state.L2_empty=state.L*(1-state.front_empty);
-  state.L1_full=state.L*state.front_full;
-  state.L2_full=state.L*(1-state.front_full);
+  state.L1_empty=state.L*(1-state.front_empty);
+  state.L2_empty=state.L*state.front_empty;
+  state.L1_full=state.L*(1-state.front_full);
+  state.L2_full=state.L*state.front_full;
 
   const v0_ms=state.v0/3.6;
   state.j0=(v0_ms*v0_ms)/(2*state.S);
@@ -1419,8 +1419,9 @@ function calcBasic(){
 
   <div class="section-sub">⑦ 质心位置（满载）</div>
   <div class="formula-box">
-    <div>L₁（前轴→质心）= L × 前轴荷比例 = ${state.L} × ${fmt(state.front_full,3)} = <strong>${fmt(state.L1_full,1)} mm</strong></div>
-    <div>L₂（后轴→质心）= L - L₁ = ${state.L} - ${fmt(state.L1_full,1)} = <strong>${fmt(state.L2_full,1)} mm</strong></div>
+    <div style="font-size:12px;color:#666;margin-bottom:4px">静载平衡：前轴静载 F_z1 = G·L₂/L ⟹ L₂ = 前轴荷比例 × L；后轴静载 F_z2 = G·L₁/L ⟹ L₁ = 后轴荷比例 × L</div>
+    <div>L₂（后轴→质心）= L × 前轴荷比例 = ${state.L} × ${fmt(state.front_full,3)} = <strong>${fmt(state.L2_full,1)} mm</strong></div>
+    <div>L₁（前轴→质心）= L − L₂ = ${state.L} − ${fmt(state.L2_full,1)} = <strong>${fmt(state.L1_full,1)} mm</strong></div>
     <div>L₁'（空载）= <strong>${fmt(state.L1_empty,1)} mm</strong>　　L₂'（空载）= <strong>${fmt(state.L2_empty,1)} mm</strong></div>
   </div>`;
 
@@ -1989,8 +1990,8 @@ function calcDisc(){
 // ---- CALC PARKING (Tab 5) ----
 function calcParking(){
   // Auto-fill L1, L2 from state
-  state.L1_full=state.L*state.front_full;
-  state.L2_full=state.L*(1-state.front_full);
+  state.L1_full=state.L*(1-state.front_full);
+  state.L2_full=state.L*state.front_full;
   document.getElementById('L1_park').value=fmt(state.L1_full,1);
   document.getElementById('L2_park').value=fmt(state.L2_full,1);
 
@@ -3060,6 +3061,7 @@ e.preventDefault();
 return false;
 }
 });
+
 </script>
 <script>
   document.addEventListener('contextmenu', e => e.preventDefault());
